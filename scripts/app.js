@@ -31,6 +31,8 @@ const page = {
 
 }
 
+const progress = parseInt(page.header.progressPercent.innerText);
+
 /* utils */
 function loadData() {
 	const habbitsString = localStorage.getItem(HABBIT_KEY);
@@ -58,7 +60,7 @@ function resetForm(form, fields) {
 	}
 }
 
-function validateAngGetFormData(form, fields) {
+function validateAndGetFormData(form, fields) {
 	const formData = new FormData(form);
 	const res = {};
 	for (const field of fields) {
@@ -76,22 +78,14 @@ function validateAngGetFormData(form, fields) {
 	for (const field of fields) {
 		if (!res[field]) {
 			isValid = false;
-		}
-	}
+		};
+	};
 
 	if (!isValid) {
 		return 
-	}
+	};
 
 	return res;
-}
-
-function checkProgress(activeHabbit) {
-	const progress = activeHabbit.days.length / activeHabbit.target > 1
-		? 100
-		: activeHabbit.days.length / activeHabbit.target * 100;
-
-	return progress.toFixed(0);
 }
 
 
@@ -114,21 +108,17 @@ function rerenderMenu(activeHabbit) {
 			continue;
 		};
 
-
-		/* исправить */
-
-		// if (activeHabbit.id === habbit.id && checkProgress(activeHabbit) > 99) {
-		// 	existed.classList.add('menu__item_complete');
-		// } else {
-		// 	existed.classList.remove('menu__item_complete');
-		// }
+		
 
 		if (activeHabbit.id === habbit.id) {
 			existed.classList.add('menu__item_active');
 		} else {
 			existed.classList.remove('menu__item_active');
 		};
-	}
+
+		console.log(progress);
+
+	};
 
 }
 
@@ -147,8 +137,7 @@ function rerenderHead(activeHabbit) {
 
 	} else {
 		page.header.progressCoverBar.classList.remove('progress__cover-bar--active');
-	}
-
+	};
 }
 
 
@@ -202,7 +191,7 @@ function rerender(activeHabbitId) {
 function addDays(event) {
 	event.preventDefault();
 
-	const data = validateAngGetFormData(event.target, ['comment']);
+	const data = validateAndGetFormData(event.target, ['comment']);
 
 
 	if (!data) {
@@ -255,7 +244,7 @@ function setIcon(context, icon) {
 function addHabbit(event) {
 	event.preventDefault();
 
-	const data = validateAngGetFormData(event.target, ['name', 'icon', 'target']);
+	const data = validateAndGetFormData(event.target, ['name', 'icon', 'target']);
 	if (!data) {
 		return;
 	};
